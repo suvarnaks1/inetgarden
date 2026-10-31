@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Your Cart | Golden Aura</title>
+  <meta name="description" content="Review the items in your Golden Aura cart.">
+  <meta name="theme-color" content="#31583b">
+
+  <link rel="icon" href="images/favicon.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@1,600&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+  <header id="site-header"></header>
+  <main>
+    <section class="page-banner">
+      <div>
+        <h1>Your Cart</h1>
+        <p>Review your selections</p>
+      </div>
+    </section>
+
+    <div class="container">
+      <div class="cart-wrap">
+        <div id="cart-list"></div>
+
+        <aside class="summary" id="summary">
+          <h3>Order Summary</h3>
+          <div class="row"><span>Subtotal</span><span id="sub">₹0.00</span></div>
+          <div class="row"><span>Shipping</span><span id="ship">₹0.00</span></div>
+          <div class="row total"><span>Total</span><span id="total">₹0.00</span></div>
+          <button class="btn btn-fill" id="checkout" type="button">Checkout</button>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <footer id="site-footer"></footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/plants.js"></script>
+  <script src="../js/vegetable.js"></script>
+  <script src="../js/vegetableseed.js"></script>
+  <script src="../js/spices.js"></script>
+  <script src="../js/animation.js"></script>
+</body>
+</html>
