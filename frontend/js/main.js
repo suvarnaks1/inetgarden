@@ -146,7 +146,7 @@ function toast(message) {
 const NAV = [
   ["index.html", "Home"],
   ["plants.php", "Plants"],
-  ["vegetable.html", "Vegetable & Tubers"],
+  ["vegetable.php", "Vegetable & Tubers"],
   ["vegetableseeds.html", "Vegetable Seeds"],
   ["spices.html", "Spices"],
   ["care.html", "Care Tips"],

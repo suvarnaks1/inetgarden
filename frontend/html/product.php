@@ -43,10 +43,21 @@ if (!$product) {
           <div class="price">₹<?php echo number_format($product['price'], 2); ?></div>
           <p><?php echo htmlspecialchars($product['description'] ?? 'Beautiful plant from Golden Aura.'); ?></p>
 
-          <ul class="meta">
+                <ul class="meta">
             <li><b>Category</b> <?php echo ucfirst($product['category']); ?></li>
-            <li><b>Light</b> Bright indirect (Demo)</li>
-            <li><b>Watering</b> Keep evenly moist (Demo)</li>
+            
+            <!-- പുതിയ വിവരങ്ങൾ ഇവിടെ കാണിക്കുന്നു -->
+            <?php if(!empty($product['pot_size'])): ?>
+                <li><b>Plant & Pot Size</b> <?php echo htmlspecialchars($product['pot_size']); ?></li>
+            <?php endif; ?>
+
+            <?php if(!empty($product['sunlight'])): ?>
+                <li><b>Sunlight</b> <?php echo htmlspecialchars($product['sunlight']); ?></li>
+            <?php endif; ?>
+
+            <?php if(!empty($product['benefits'])): ?>
+                <li><b>Benefits</b> <?php echo htmlspecialchars($product['benefits']); ?></li>
+            <?php endif; ?>
           </ul>
 
           <div class="qty">
