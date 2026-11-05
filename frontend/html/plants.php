@@ -12,16 +12,120 @@ $result = $conn->query($sql);
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Plants | Golden Aura</title>
-  <meta name="description" content="Browse Golden Aura's exotic caladiums, heliconias and begonias.">
+  <meta name="description" content="Browse Golden Aura's exotic plants.">
   <meta name="theme-color" content="#31583b">
 
   <link rel="icon" href="../images/favicon.svg">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@1,600&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../css/style.css">
+
+  <!-- കാർഡ് ഡിസൈൻ മാറ്റങ്ങൾക്കായുള്ള CSS -->
+  <style>
+    /* ഗ്രിഡ് ലേയൗട്ട് */
+    #product-grid-php {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .product-card.php-card {
+        border: 1px solid #b58d5a;
+        border-radius: 8px;
+        padding: 15px;
+        background: #fff;
+        display: flex;
+        flex-direction: column;
+        transition: box-shadow 0.3s ease;
+    }
+    .product-card.php-card:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    /* ഇമേജ് സ്റ്റൈൽ - വീതിയും ഉയരവും ഫിക്സ് ചെയ്തു */
+    .card-img-wrap {
+        width: 100%;
+        height: 180px; /* ഇമേജിന്റെ ഉയരം ഇവിടെ മാറ്റാം */
+        border-radius: 6px;
+        overflow: hidden;
+        margin-bottom: 15px;
+    }
+    .card-img-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* ഇമേജ് വലിഞ്ഞു പോകാതിരിക്കാൻ */
+        display: block;
+    }
+
+    .product-card.php-card h3 {
+        margin: 0 0 8px 0;
+        font-size: 1.1rem;
+        color: #000;
+    }
+
+    /* ഡിസ്ക്രിപ്ഷൻ വെട്ടിക്കുറയ്ക്കാൻ (2 വരികൾ മാത്രം കാണിക്കാൻ) */
+    .product-card.php-card .desc {
+        font-size: 0.85rem;
+        color: #555;
+        margin-bottom: 15px;
+        line-height: 1.4;
+        
+        /* 2 വരികൾക്ക് ശേഷം ... വരാൻ */
+        display: -webkit-box;
+        -webkit-line-clamp: 2; 
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        
+        min-height: 2.8em; /* ഉയരം എല്ലാ കാർഡിനും ഒരുപോലെ ആക്കാൻ */
+    }
+
+    .product-card.php-card .price {
+        font-weight: bold;
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+        color: #000;
+        margin-top: auto; /* വില താഴേക്ക് ഒട്ടിക്കാൻ */
+    }
+
+    .card-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    /* ബട്ടൺ സ്റ്റൈലുകൾ */
+    .btn {
+        padding: 8px 10px;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        flex: 1;
+        transition: 0.2s;
+    }
+    .btn-fill {
+        background-color: #9c6b3f;
+        color: white;
+        border: 1px solid #9c6b3f;
+    }
+    .btn-fill:hover {
+        background-color: #7a5230;
+    }
+    .btn-line {
+        background-color: white;
+        color: #333;
+        border: 1px solid #ddd;
+    }
+    .btn-line:hover {
+        background-color: #f5f5f5;
+        border-color: #bbb;
+    }
+  </style>
 </head>
 
 <body>
@@ -50,25 +154,26 @@ $result = $conn->query($sql);
           </div>
         </div>
 
-        <!-- നിങ്ങളുടെ പഴയ ഡിസൈൻ തന്നെ ഇവിടെ വരുന്നു -->
-        <div class="grid" id="product-grid-php">
+        <!-- പ്രൊഡക്ട് ഗ്രിഡ് -->
+        <div id="product-grid-php">
             <?php
             if ($result->num_rows > 0) {
                 while($row = $result->fetch_assoc()) {
                     ?>
-                    <div class="product-card php-card" style="display:flex; flex-direction:column;">
+                    <div class="product-card php-card">
                         <div class="card-img-wrap">
-                            <div class="card-img">
-                                <img src="../images/<?php echo htmlspecialchars($row['image_url']); ?>" alt="<?php echo htmlspecialchars($row['name']); ?>" loading="lazy">
-                            </div>
+                            <img src="../images/<?php echo htmlspecialchars($row['image_url']); ?>" alt="<?php echo htmlspecialchars($row['name']); ?>" loading="lazy">
                         </div>
                         <h3><?php echo htmlspecialchars($row['name']); ?></h3>
+                        
+                        <!-- ഡിസ്ക്രിപ്ഷൻ (2 വരികൾ മാത്രം കാണിക്കും) -->
                         <p class="desc"><?php echo htmlspecialchars($row['description'] ?? 'Beautiful plant from Golden Aura.'); ?></p>
+                        
                         <div class="price">₹<?php echo number_format($row['price'], 2); ?></div>
 
                         <div class="card-actions">
                             <button class="btn btn-fill" onclick="addToCart(<?php echo $row['id']; ?>)">Add to Cart</button>
-                            <!-- ഇവിടെയാണ് മാറ്റം വരുത്തിയത്: product.html -> product.php -->
+                            <!-- ഇവിടെയാണ് മാറ്റം: product.php ലേക്ക് ലിങ്ക് ചെയ്യുന്നു -->
                             <a class="btn btn-line" href="product.php?id=<?php echo $row['id']; ?>">Learn More</a>
                         </div>
                     </div>
@@ -85,11 +190,10 @@ $result = $conn->query($sql);
 
   <footer id="site-footer"></footer>
 
-  <!-- main.js ലോഡ് ചെയ്യുന്നു (ഇതിൽ Header, Footer, Cart എന്നിവ വരും) -->
   <script src="../js/main.js"></script>
   
   <script>
-    // === സെർച്ച് ഫങ്ക്ഷണാലിറ്റി ===
+    // സെർച്ച് ഫങ്ക്ഷണാലിറ്റി
     document.getElementById('search').addEventListener('keyup', function() {
         let filter = this.value.toLowerCase();
         let cards = document.querySelectorAll('.php-card');
@@ -99,7 +203,7 @@ $result = $conn->query($sql);
         });
     });
 
-    // === സോർട്ട് ഫങ്ക്ഷണാലിറ്റി ===
+    // സോർട്ട് ഫങ്ക്ഷണാലിറ്റി
     document.getElementById('sort').addEventListener('change', function() {
         let sortValue = this.value;
         let grid = document.getElementById('product-grid-php');
