@@ -33,42 +33,41 @@ $result = $conn->query($sql);
         margin-top: 20px;
     }
 
-    .product-card.php-card {
+    /* ഇവിടെ .card എന്ന് നൽകിയിട്ടുണ്ട്, അതിനാൽ style.css-ലെ ഹോവർ ആനിമേഷൻ പ്രവർത്തിക്കും */
+    .card {
         border: 1px solid #b58d5a;
         border-radius: 8px;
         padding: 15px;
         background: #fff;
         display: flex;
         flex-direction: column;
-        transition: box-shadow 0.3s ease;
-    }
-    .product-card.php-card:hover {
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
-    /* ഇമേജ് സ്റ്റൈൽ - വീതിയും ഉയരവും ഫിക്സ് ചെയ്തു */
-    .card-img-wrap {
-        width: 100%;
-        height: 180px; /* ഇമേജിന്റെ ഉയരം ഇവിടെ മാറ്റാം */
+    /* style.css-ൽ .card-img-ന് നൽകിയിരിക്കുന്ന ഉയരം ഇവിടെ ഓവർറൈഡ് ചെയ്യുന്നു */
+    .card .card-img {
+        height: 180px; 
+        aspect-ratio: auto; /* aspect-ratio ഒഴിവാക്കുന്നു */
         border-radius: 6px;
         overflow: hidden;
         margin-bottom: 15px;
+        border: none;
     }
-    .card-img-wrap img {
+    
+    .card .card-img img {
         width: 100%;
         height: 100%;
-        object-fit: cover; /* ഇമേജ് വലിഞ്ഞു പോകാതിരിക്കാൻ */
+        object-fit: cover; 
         display: block;
     }
 
-    .product-card.php-card h3 {
+    .card h3 {
         margin: 0 0 8px 0;
         font-size: 1.1rem;
         color: #000;
     }
 
     /* ഡിസ്ക്രിപ്ഷൻ വെട്ടിക്കുറയ്ക്കാൻ (2 വരികൾ മാത്രം കാണിക്കാൻ) */
-    .product-card.php-card .desc {
+    .card p.desc {
         font-size: 0.85rem;
         color: #555;
         margin-bottom: 15px;
@@ -81,15 +80,15 @@ $result = $conn->query($sql);
         overflow: hidden;
         text-overflow: ellipsis;
         
-        min-height: 2.8em; /* ഉയരം എല്ലാ കാർഡിനും ഒരുപോലെ ആക്കാൻ */
+        min-height: 2.8em; 
     }
 
-    .product-card.php-card .price {
+    .card .price {
         font-weight: bold;
         font-size: 1.1rem;
         margin-bottom: 15px;
         color: #000;
-        margin-top: auto; /* വില താഴേക്ക് ഒട്ടിക്കാൻ */
+        margin-top: auto; 
     }
 
     .card-actions {
@@ -106,24 +105,16 @@ $result = $conn->query($sql);
         text-align: center;
         text-decoration: none;
         flex: 1;
-        transition: 0.2s;
     }
     .btn-fill {
         background-color: #9c6b3f;
         color: white;
         border: 1px solid #9c6b3f;
     }
-    .btn-fill:hover {
-        background-color: #7a5230;
-    }
     .btn-line {
         background-color: white;
         color: #333;
         border: 1px solid #ddd;
-    }
-    .btn-line:hover {
-        background-color: #f5f5f5;
-        border-color: #bbb;
     }
   </style>
 </head>
@@ -155,25 +146,24 @@ $result = $conn->query($sql);
         </div>
 
         <!-- പ്രൊഡക്ട് ഗ്രിഡ് -->
-        <div id="product-grid-php">
+        <div id="product-grid-php" class="grid">
             <?php
             if ($result->num_rows > 0) {
                 while($row = $result->fetch_assoc()) {
                     ?>
-                    <div class="product-card php-card">
-                        <div class="card-img-wrap">
+                    <!-- ഇവിടെ ക്ലാസ്സ് 'card' എന്നാക്കി മാറ്റി, അതിനാൽ style.css-ലെ ആനിമേഷനുകൾ പ്രവർത്തിക്കും -->
+                    <div class="card">
+                        <div class="card-img">
                             <img src="../images/<?php echo htmlspecialchars($row['image_url']); ?>" alt="<?php echo htmlspecialchars($row['name']); ?>" loading="lazy">
                         </div>
                         <h3><?php echo htmlspecialchars($row['name']); ?></h3>
                         
-                        <!-- ഡിസ്ക്രിപ്ഷൻ (2 വരികൾ മാത്രം കാണിക്കും) -->
                         <p class="desc"><?php echo htmlspecialchars($row['description'] ?? 'Beautiful plant from Golden Aura.'); ?></p>
                         
                         <div class="price">₹<?php echo number_format($row['price'], 2); ?></div>
 
                         <div class="card-actions">
                             <button class="btn btn-fill" onclick="addToCart(<?php echo $row['id']; ?>)">Add to Cart</button>
-                            <!-- ഇവിടെയാണ് മാറ്റം: product.php ലേക്ക് ലിങ്ക് ചെയ്യുന്നു -->
                             <a class="btn btn-line" href="product.php?id=<?php echo $row['id']; ?>">Learn More</a>
                         </div>
                     </div>
@@ -196,7 +186,7 @@ $result = $conn->query($sql);
     // സെർച്ച് ഫങ്ക്ഷണാലിറ്റി
     document.getElementById('search').addEventListener('keyup', function() {
         let filter = this.value.toLowerCase();
-        let cards = document.querySelectorAll('.php-card');
+        let cards = document.querySelectorAll('.card');
         cards.forEach(card => {
             let title = card.querySelector('h3').textContent.toLowerCase();
             card.style.display = title.includes(filter) ? "" : "none";
@@ -207,7 +197,7 @@ $result = $conn->query($sql);
     document.getElementById('sort').addEventListener('change', function() {
         let sortValue = this.value;
         let grid = document.getElementById('product-grid-php');
-        let cards = Array.from(grid.getElementsByClassName('php-card'));
+        let cards = Array.from(grid.getElementsByClassName('card'));
 
         cards.sort((a, b) => {
             let priceA = parseFloat(a.querySelector('.price').textContent.replace('₹', '').replace(',', ''));
@@ -226,4 +216,4 @@ $result = $conn->query($sql);
     });
   </script>
 </body>
-</html>
+</html>                                                     
